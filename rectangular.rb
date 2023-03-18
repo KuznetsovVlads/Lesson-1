@@ -5,26 +5,38 @@ puts "Введите размер второй стороны треугольн
 b = gets.to_f
 puts "Введите размер третьей стороны треугольника"
 c = gets.to_f
+if a + b > c && a + c > b && b + c > a
+    
+    right = a == b && b == c
+    
+    max = [a, b, c].sort
 
-right = a == b && a == c
+    rectangle = max[2] ** 2 == max[0] ** 2 + max[1] ** 2
+    
+    isosceles = a == b && a != c || a == c && a != b || b == c && b != a
+    
+    both = false
 
-max = [a, b, c].sort
+    if rectangle && isosceles
+        if a == b || b == c || c == a
+            both = true
+        end
+    end
 
-rectangle = max[2] ** 2 == max[0] ** 2 + max[1] ** 2
-
-isosceles = a == b && a != c || a == c && a != b || b == c && b != a
-
-if right
-    puts "Треугольник равносторонний"
-
-elsif isosceles
-    puts "Треугольник равнобедренный"
-
-elsif rectangle
-    puts "Треугольник прямоугольный"
-
+    case 
+        when both
+            puts "Треугольник и равнобедренный и прямоугольный"
+        when right 
+            puts "Треугольник равносторонний"
+        when isosceles
+            puts "Треугольник равнобедренный"
+        when rectangle
+            puts "Треугольник прямоугольный"
+        else
+            puts "Это обычный треугольник"
+    end
+    
 else
-    puts "Это обычный треугольник" 
+    puts "Треугольник не существует"
+
 end
-
-
