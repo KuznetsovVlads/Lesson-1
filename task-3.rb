@@ -2,9 +2,10 @@
 # Последовательность чисел Фибоначчи определяется формулой Fn = Fn-1 + Fn-2 
 
 fibonacci = [0, 1] # начальные числа Фибоначчи
-i = 1
 
-while fibonacci[i] < 100
-  i += 1
-  fibonacci[i] = fibonacci[i-1] + fibonacci[i-2]
+loop do 
+  fibonacci[fibonacci.size] = fibonacci[-1] + fibonacci[-2]
+  break fibonacci.pop if fibonacci.last > 100
 end
+
+puts fibonacci

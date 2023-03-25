@@ -27,16 +27,18 @@ loop do
 
     check[product] = {price => amount}
 end
-
+puts  #для удобства чтения информации в консоли
 puts check.inspect
+puts
+
 sum = 0 # переменная в которой сумма за все товары
-check.each_pair do |key, value|
-    coast = 0   
-    value.each_pair do |key, value|
-        sum += key * value
-        coast = key * value
+check.each do |product, hash_sum|
+    cost = 0   
+    hash_sum.each do |price, amount|
+        sum += price * amount
+        cost = price * amount
     end
-    puts "Cумма за #{key} = #{coast}"
+    puts "Cумма за #{product} = #{cost}"
 end
 
 puts "Итоговая сумма всех покупок #{sum}"
