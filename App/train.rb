@@ -1,11 +1,13 @@
+# Класс для создания обьектов типа поезд.
 class Train
-  attr_reader :amount_wagons, :current_station, :number, :type
+  attr_reader :wagons, :current_station, :number, :type, :route
+
   attr_accessor :speed # можем устанавливать и получать скорость поезда
 
-  def initialize(number, type, amount_wagons)
+  def initialize(number)
     @number = number
-    @type = type
-    @amount_wagons = amount_wagons
+    @type = nil
+    @wagons = []
     @speed = 0
     @route = nil
     @current_station = nil
@@ -17,13 +19,13 @@ class Train
   end
 
   # поезд может прицеплять вагоны
-  def add_wagon
-    @amount_wagons += 1 if @speed.zero?
+  def add_wagon(wagon_name)
+    wagons << wagon_name if @type == wagon_name.type && @speed.zero?
   end
 
   # поезд может отцеплять вагоны
   def remove_wagon
-    @amount_wagons -= 1 if @amount_wagons > 0 && @speed.zero?
+    wagons.pop if @speed.zero?
   end
 
   # поезд может принимать маршрут следования
@@ -33,25 +35,17 @@ class Train
     @current_station.add_train(self)
   end
 
-  # пщезд может перемещаться между станциями
+  # поезд может перемещаться между станциями
   def go_to_next_station
-    if index_current_station == @route.list_stations.size - 1
-      puts 'Вы уже на конечной станции'
-    else
-      remove_train_from_station
-      @current_station = @route.list_stations[index_current_station + 1] # Переходим на следующую станцию
-      add_train_on_new_station # Ставим поезд на новую станцию
-    end
+    remove_train_from_station
+    @current_station = @route.list_stations[index_current_station + 1] # Переходим на следующую станцию
+    add_train_on_new_station # Ставим поезд на новую станцию
   end
 
-  def go_to_previos_station
-    if index_current_station.zero?
-      puts 'Вы на первой станции'
-    else
-      remove_train_from_station
-      @current_station = @route.list_stations[index_current_station - 1]
-      add_train_on_new_station # Ставим поезд на новую станцию
-    end
+  def go_to_previous_station
+    remove_train_from_station
+    @current_station = @route.list_stations[index_current_station - 1]
+    add_train_on_new_station # Ставим поезд на новую станцию
   end
 
   # поезд  может возвращать предыдущую станцию на основе маршрута
