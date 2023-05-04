@@ -1,12 +1,11 @@
 # Класс для создания обьектов типа поезд.
 class Train
-  attr_reader :wagons, :current_station, :number, :type, :route
+  attr_reader :wagons, :current_station, :number, :route
 
   attr_accessor :speed # можем устанавливать и получать скорость поезда
 
   def initialize(number)
     @number = number
-    @type = nil
     @wagons = []
     @speed = 0
     @route = nil
@@ -20,7 +19,7 @@ class Train
 
   # поезд может прицеплять вагоны
   def add_wagon(wagon_name)
-    wagons << wagon_name if @type == wagon_name.type && @speed.zero?
+    wagons << wagon_name if @speed.zero?
   end
 
   # поезд может отцеплять вагоны

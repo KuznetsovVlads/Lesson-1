@@ -17,11 +17,7 @@ class Route
 
   # выводим список всех станций по-порядку от начальной до конечной
   def info
-    info_list = []
-    @list_stations.each do |station|
-      info_list << station.name
-    end
-    puts info_list.join(' -> ')
+    puts @list_stations.map(&:name).join(' -> ')
   end
 
 end
