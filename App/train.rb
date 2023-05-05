@@ -17,10 +17,11 @@ class Train
     @speed = 0
   end
 
+  # метод вынесен в дочерние классы: TrainCargo, TrainPass
   # поезд может прицеплять вагоны
-  def add_wagon(wagon_name)
-    wagons << wagon_name if @speed.zero?
-  end
+  # def add_wagon(wagon)
+  #   wagons << wagon if @speed.zero?
+  # end
 
   # поезд может отцеплять вагоны
   def remove_wagon
@@ -36,15 +37,19 @@ class Train
 
   # поезд может перемещаться между станциями
   def go_to_next_station
+    return if @current_station == @route.list_stations.last
+
     remove_train_from_station
-    @current_station = @route.list_stations[index_current_station + 1] # Переходим на следующую станцию
-    add_train_on_new_station # Ставим поезд на новую станцию
+    @current_station = @route.list_stations[index_current_station + 1]
+    add_train_on_new_station
   end
 
   def go_to_previous_station
+    return if @current_station == @route.list_stations.first
+
     remove_train_from_station
     @current_station = @route.list_stations[index_current_station - 1]
-    add_train_on_new_station # Ставим поезд на новую станцию
+    add_train_on_new_station
   end
 
   # поезд  может возвращать предыдущую станцию на основе маршрута

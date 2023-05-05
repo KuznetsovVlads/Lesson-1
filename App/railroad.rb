@@ -7,13 +7,13 @@
 #  - Отцеплять вагоны от поезда
 #  - Перемещать поезд по маршруту вперед и назад
 #  - Просматривать список станций и список поездов на станции
-require_relative 'route'
-require_relative 'station'
-require_relative 'train'
-require_relative 'train_cargo'
-require_relative 'train_pass'
-require_relative 'wagon_cargo'
-require_relative 'wagon_pass'
+require_relative './route'
+require_relative './station'
+require_relative './train'
+require_relative './train_cargo'
+require_relative './train_pass'
+require_relative './wagon_cargo'
+require_relative './wagon_pass'
 
 class RailRoad
   attr_reader :stations, :routes, :trains, :wagons
@@ -223,7 +223,7 @@ class RailRoad
 
   def remove_station_from_route(route, station)
     if station == route.list_stations[0] || station == route.list_stations[-1]
-      puts 'Начальную или конечную станции нельзя удалить'
+      puts 'Невозможно удалить ключевую станцию'
     elsif route.list_stations.include?(station)
       route.delete_station(station)
       puts 'Станция удалена из маршрута'
