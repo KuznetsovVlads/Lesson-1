@@ -7,6 +7,8 @@ class TrainCargo < Train
   end
 
   def add_wagon(wagon)
-    @wagons << wagon if wagon.is_a?(WagonCargo) && @speed.zero?
+    super
+
+    @wagons << wagon if wagon.is_a?(WagonCargo)
   end
 end

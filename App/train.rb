@@ -37,6 +37,10 @@ class Train
     @speed = 0
   end
 
+  def add_wagon(wagon)
+    return unless @speed.zero?
+  end
+
   # поезд может отцеплять вагоны
   def remove_wagon
     wagons.pop if @speed.zero?
