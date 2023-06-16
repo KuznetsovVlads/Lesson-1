@@ -1,2 +1,6 @@
 # Класс для создания вагонов исключительно грузового типа
-class WagonCargo end
+require_relative './manufacturer'
+
+class WagonCargo
+  include Manufacturer
+end

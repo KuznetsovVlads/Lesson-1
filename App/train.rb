@@ -1,5 +1,12 @@
 # Класс для создания обьектов типа поезд.
+require_relative './manufacturer'
+require_relative './instance_counter'
+
 class Train
+  extend InstanceCounter
+  include InstanceCounter
+  include Manufacturer
+
   attr_reader :wagons, :current_station, :number, :route
 
   attr_accessor :speed # можем устанавливать и получать скорость поезда
@@ -10,18 +17,25 @@ class Train
     @speed = 0
     @route = nil
     @current_station = nil
+    self.class.all_trains << self
+    self.register_instance
+  end
+
+  # find - метод класса, принимает номер поезда (указанный при его создании)
+  # и возвращает объект поезда по номеру или nil,
+  # если поезд с таким номером не найден.
+  def self.find(number)
+    @all_trains.find { |train| train.number == number }
+  end
+
+  def self.all_trains
+    @all_trains ||= []
   end
 
   # поезд может тормозить
   def stop_train
     @speed = 0
   end
-
-  # метод вынесен в дочерние классы: TrainCargo, TrainPass
-  # поезд может прицеплять вагоны
-  # def add_wagon(wagon)
-  #   wagons << wagon if @speed.zero?
-  # end
 
   # поезд может отцеплять вагоны
   def remove_wagon

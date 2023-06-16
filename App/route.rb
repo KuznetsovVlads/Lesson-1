@@ -1,8 +1,13 @@
+require_relative './instance_counter'
+
 class Route
+  extend InstanceCounter
+  include InstanceCounter
   attr_reader :list_stations
 
   def initialize(start, finish)
     @list_stations = [start, finish]
+    self.register_instance
   end
 
   # добавляем промежуточную станцию в список
