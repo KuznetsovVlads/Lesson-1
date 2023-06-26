@@ -29,10 +29,6 @@ class Train
     @all_trains.find { |train| train.number == number }
   end
 
-  def self.all
-    @all_trains ||= []
-  end
-
   # поезд может тормозить
   def stop_train
     @speed = 0

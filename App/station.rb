@@ -3,7 +3,7 @@ require_relative './toall'
 
 class Station
   include InstanceCounter
-  @all_stations = []
+  include ToAll
   attr_reader :name, :trains
 
   def initialize(name)
@@ -32,8 +32,4 @@ class Station
     @trains.delete(train)
   end
 
-  #  возвращаем все станции (объекты)
-  def self.all
-    @all_stations
-  end
 end
