@@ -1,7 +1,7 @@
 require_relative './instance_counter'
+require_relative './toall'
 
 class Station
-  extend InstanceCounter
   include InstanceCounter
   @all_stations = []
   attr_reader :name, :trains
@@ -9,8 +9,8 @@ class Station
   def initialize(name)
     @name = name
     @trains = []
-    self.register_instance
-    self.class.all << self
+    register_instance
+    add_self_to_all
   end
 
   # принимаем поезда (по одному за раз)

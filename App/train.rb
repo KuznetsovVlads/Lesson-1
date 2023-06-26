@@ -1,11 +1,12 @@
 # Класс для создания обьектов типа поезд.
 require_relative './manufacturer'
 require_relative './instance_counter'
+require_relative './toall'
 
 class Train
-  extend InstanceCounter
   include InstanceCounter
   include Manufacturer
+  include ToAll
 
   attr_reader :wagons, :current_station, :number, :route
 
@@ -17,8 +18,8 @@ class Train
     @speed = 0
     @route = nil
     @current_station = nil
-    self.class.all_trains << self
-    self.register_instance
+    add_self_to_all
+    register_instance
   end
 
   # find - метод класса, принимает номер поезда (указанный при его создании)
@@ -28,7 +29,7 @@ class Train
     @all_trains.find { |train| train.number == number }
   end
 
-  def self.all_trains
+  def self.all
     @all_trains ||= []
   end
 
