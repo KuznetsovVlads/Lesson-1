@@ -1,9 +1,16 @@
+require_relative './instance_counter'
+require_relative './toall'
+
 class Station
+  include InstanceCounter
+  include ToAll
   attr_reader :name, :trains
 
   def initialize(name)
     @name = name
     @trains = []
+    register_instance
+    add_self_to_all
   end
 
   # принимаем поезда (по одному за раз)
@@ -24,4 +31,5 @@ class Station
   def send_train(train)
     @trains.delete(train)
   end
+
 end

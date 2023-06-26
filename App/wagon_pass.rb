@@ -1,2 +1,6 @@
 # Класс для создания вагонов исключительно пассажирского типа
-class WagonPass end
+require_relative './manufacturer'
+
+class WagonPass
+  include Manufacturer
+end
