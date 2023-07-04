@@ -1,3 +1,4 @@
+# Модуль добавляет все созданные объекты в массив класса
 module ToAll
   def self.included(base)
     base.extend(ClassMethods)

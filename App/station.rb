@@ -1,16 +1,22 @@
+# Класс для создания станций
 require_relative './instance_counter'
 require_relative './toall'
+require_relative './validation'
 
 class Station
   include InstanceCounter
   include ToAll
+  include Validation::ValidStation
+  include Validation
+
   attr_reader :name, :trains
 
   def initialize(name)
     @name = name
     @trains = []
-    register_instance
     add_self_to_all
+    validate!
+    register_instance
   end
 
   # принимаем поезда (по одному за раз)
