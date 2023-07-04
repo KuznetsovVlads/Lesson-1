@@ -1,3 +1,4 @@
+# Модуль для подсчета созданных объектов
 module InstanceCounter
   def self.included(base)
     base.extend(ClassMethods)

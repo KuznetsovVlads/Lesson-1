@@ -2,11 +2,15 @@
 require_relative './manufacturer'
 require_relative './instance_counter'
 require_relative './toall'
+require_relative './validation'
+
 
 class Train
   include InstanceCounter
   include Manufacturer
   include ToAll
+  include Validation::ValidTrain
+  include Validation
 
   attr_reader :wagons, :current_station, :number, :route
 
@@ -19,6 +23,7 @@ class Train
     @route = nil
     @current_station = nil
     add_self_to_all
+    validate!
     register_instance
   end
 
@@ -34,7 +39,7 @@ class Train
     @speed = 0
   end
 
-  def add_wagon(wagon)
+  def add_wagon(_wagon)
     return unless @speed.zero?
   end
 
