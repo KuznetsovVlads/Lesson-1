@@ -2,11 +2,15 @@
 require_relative './manufacturer'
 require_relative './instance_counter'
 require_relative './toall'
+require_relative './validation'
+
 
 class Train
   include InstanceCounter
   include Manufacturer
   include ToAll
+  include Validation::ValidTrain
+  include Validation
 
   attr_reader :wagons, :current_station, :number, :route
 
@@ -19,6 +23,7 @@ class Train
     @route = nil
     @current_station = nil
     add_self_to_all
+    validate!
     register_instance
   end
 
@@ -35,12 +40,15 @@ class Train
   end
 
   def add_wagon(wagon)
-    return unless @speed.zero?
+    speed_train_zero?(self)
+  #  return unless @speed.zero?
+    @wagons << wagon
   end
 
   # поезд может отцеплять вагоны
   def remove_wagon
-    wagons.pop if @speed.zero?
+    speed_train_zero?(self)
+    @wagons.pop if @speed.zero?
   end
 
   # поезд может принимать маршрут следования

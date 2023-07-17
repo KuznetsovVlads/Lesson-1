@@ -1,11 +1,16 @@
+# Класс для создания маршрутов
 require_relative './instance_counter'
+require_relative './validation'
 
 class Route
   include InstanceCounter
+  include Validation::ValidRoute
+  include Validation
   attr_reader :list_stations
 
   def initialize(start, finish)
     @list_stations = [start, finish]
+    validate!
     register_instance
   end
 
@@ -16,8 +21,6 @@ class Route
 
   # удаляем промежуточную станцию из списка
   def delete_station(station)
-    return if station == @list_stations[0] || station == @list_stations[-1]
-
     @list_stations.delete(station)
   end
 
