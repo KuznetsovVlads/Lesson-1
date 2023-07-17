@@ -27,6 +27,10 @@ module Validation
       raise 'Не может быть пустым' if @number.nil?
       raise 'Не правильный формат номера' if @number !~ NUMBER_TRAIN_FORMAT
     end
+
+    def speed_train_zero?(train)
+      raise 'Поезд должен быть остановлен' unless train.speed.zero?
+    end
   end
 
   module ValidRoute
@@ -34,6 +38,7 @@ module Validation
 
     def validate!
       raise 'Станции не найдены' if @list_stations.compact.size < 2
+      raise 'Ошибка данных' unless @list_stations[0].is_a?(Station) || @list_stations[1].is_a?(Station)
     end
   end
 end

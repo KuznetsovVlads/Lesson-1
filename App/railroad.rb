@@ -14,8 +14,12 @@ require_relative './train_cargo'
 require_relative './train_pass'
 require_relative './wagon_cargo'
 require_relative './wagon_pass'
+require_relative './validation'
+
 
 class RailRoad
+  include Validation::ValidTrain
+
   attr_reader :stations, :routes, :trains, :wagons
 
   def initialize
@@ -209,7 +213,6 @@ class RailRoad
 
   def remove_station_from_route(route, station)
     raise 'Невозможно удалить эту станцию' if station == route.list_stations[0] || station == route.list_stations[-1]
-
     raise 'Этой станции нет в маршруте' unless route.list_stations.include?(station)
 
     route.delete_station(station)
@@ -257,10 +260,10 @@ class RailRoad
 
   def add_wagon_to_train(train)
     wagon = find_wagon_by_type(train)
-    raise 'Не найдено свободных вагонв такого типа' if wagon.nil?
+    raise 'Не найдено свободных вагонов такого типа' if wagon.nil?
 
     train.add_wagon(wagon)
-    wagons.delete(wagon)
+    @wagons.delete(wagon)
     puts 'Вагон успешно прицеплен к поезду'
   rescue RuntimeError => e
     puts_error(e)
@@ -324,8 +327,6 @@ class RailRoad
           'Введите 0, если хотите вернуться в предыдущее меню'].join("\n")
     answer = gets.to_i
     clear
-    raise 'Станций не существует' if stations.empty?
-
     case answer
     when 1
       info_stations
@@ -342,6 +343,8 @@ class RailRoad
   end
 
   def info_stations
+    raise 'Станций не существует' if stations.empty?
+
     puts "Существуют такие станции: #{stations.map(&:name).join(', ')}"
   end
 

@@ -21,8 +21,6 @@ class Route
 
   # удаляем промежуточную станцию из списка
   def delete_station(station)
-    return if station == @list_stations[0] || station == @list_stations[-1]
-
     @list_stations.delete(station)
   end
 

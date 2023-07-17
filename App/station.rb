@@ -21,6 +21,8 @@ class Station
 
   # принимаем поезда (по одному за раз)
   def add_train(train)
+    raise 'Ошибка данных' if train.is_a(TrainCargo) || train.is_a(TrainPass)
+
     @trains << train
   end
 
