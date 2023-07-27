@@ -39,10 +39,8 @@ class Train
     @speed = 0
   end
 
-  def add_wagon(wagon)
+  def add_wagon(_wagon)
     speed_train_zero?(self)
-  #  return unless @speed.zero?
-    @wagons << wagon
   end
 
   # поезд может отцеплять вагоны
@@ -83,6 +81,14 @@ class Train
   # поезд  может возвращать следующую станцию на основе маршрута
   def next_station
     @route.list_stations[index_current_station + 1] if index_current_station < (@route.list_stations.size - 1)
+  end
+
+  # метод, который принимает блок и проходит по всем вагонам поезда
+  # (вагоны должны быть во внутреннем массиве), передавая каждый объект вагона в блок.
+  def each_wagons
+    wagons.each_with_index do |wagon, i|
+      yield(wagon, i)
+    end
   end
 
   private

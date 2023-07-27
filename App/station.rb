@@ -21,7 +21,7 @@ class Station
 
   # принимаем поезда (по одному за раз)
   def add_train(train)
-    raise 'Ошибка данных' if train.is_a(TrainCargo) || train.is_a(TrainPass)
+    raise 'Ошибка данных' unless train.is_a?(TrainCargo) || train.is_a?(TrainPass)
 
     @trains << train
   end
@@ -40,4 +40,11 @@ class Station
     @trains.delete(train)
   end
 
+  # метод, который принимает блок и проходит по всем поездам на станции, передавая каждый поезд в блок
+  def each_trains
+    puts "На станции - #{@name} находятся следующие поезда:"
+    @trains.each do |train|
+      yield(train)
+    end
+  end
 end

@@ -41,4 +41,20 @@ module Validation
       raise 'Ошибка данных' unless @list_stations[0].is_a?(Station) || @list_stations[1].is_a?(Station)
     end
   end
+
+  module ValidWagonPass
+    protected
+
+    def validate!
+      raise 'Неверное значение мест' if @total_seats <= 0 || @total_seats > 100
+    end
+  end
+
+  module ValidWagonCargo
+    protected
+
+    def validate!
+      raise 'Неверное значение объема' if @total_volume <= 0 || @total_volume > 250
+    end
+  end
 end
