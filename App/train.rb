@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
 # Класс для создания обьектов типа поезд.
 require_relative './manufacturer'
 require_relative './instance_counter'
 require_relative './toall'
 require_relative './validation'
-
 
 class Train
   include InstanceCounter
@@ -39,10 +40,8 @@ class Train
     @speed = 0
   end
 
-  def add_wagon(wagon)
+  def add_wagon(_wagon)
     speed_train_zero?(self)
-  #  return unless @speed.zero?
-    @wagons << wagon
   end
 
   # поезд может отцеплять вагоны
@@ -83,6 +82,12 @@ class Train
   # поезд  может возвращать следующую станцию на основе маршрута
   def next_station
     @route.list_stations[index_current_station + 1] if index_current_station < (@route.list_stations.size - 1)
+  end
+
+  # метод, который принимает блок и проходит по всем вагонам поезда
+  # (вагоны должны быть во внутреннем массиве), передавая каждый объект вагона в блок.
+  def each_wagons(&block)
+    wagons.each_with_index(&block)
   end
 
   private

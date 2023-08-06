@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Класс который позволяет через текстовый интерфейс делать следующее:
 #  - Создавать станции
 #  - Создавать поезда
@@ -15,7 +17,6 @@ require_relative './train_pass'
 require_relative './wagon_cargo'
 require_relative './wagon_pass'
 require_relative './validation'
-
 
 class RailRoad
   include Validation::ValidTrain
@@ -46,7 +47,7 @@ class RailRoad
       info
     else
       puts 'Выход'
-      exit
+      # exit
     end
   end
 
@@ -114,14 +115,20 @@ class RailRoad
     clear
     case answer
     when 1
-      @wagons << WagonCargo.new
-      puts 'Создан один грузовой вагон'
+      puts 'Укажите объем вагона в тоннах (от 60 до 250)'
+      volume = gets.to_i
+      @wagons << WagonCargo.new(volume)
+      puts "Создан один грузовой вагон вмещяющий #{volume} тонн"
     when 2
-      @wagons << WagonPass.new
-      puts 'Создан один пассажирский вагон'
+      puts 'Укажите количество мест в вагоне (от 10 до 100)'
+      seats = gets.to_i
+      @wagons << WagonPass.new(seats)
+      puts "Создан один пассажирский вагон на #{seats} мест"
     else
       create
     end
+  rescue RuntimeError => e
+    puts_error(e)
   end
 
   def create_route
@@ -143,7 +150,7 @@ class RailRoad
   def operation
     puts ['Введите 1, если вы хотите добавить или удалить станцию в маршруте',
           'Введите 2, если вы хотите назначить маршрут поезду',
-          'Введите 3, если вы хотите добавить или отцепить вагоны поезда',
+          'Введите 3, если вы хотите произвести действие с вагонами',
           'Введите 4, если вы хотите перемещать поезд по маршруту вперед и назад',
           'Введите 0, если хотите вернуться в предыдущее меню'].join("\n")
     answer = gets.to_i
@@ -238,19 +245,27 @@ class RailRoad
   def operation_with_wagon
     puts ['Введите 1, если вы хотите добавить вагон',
           'Введите 2, если вы хотите удалить вагон',
+          'Введите 3, если вы хотите загрузить вагон',
           'Введите 0, если хотите вернуться в предыдущее меню'].join("\n")
     answer = gets.to_i
     clear
+    return if answer.zero?
+
     train = which_train
     raise 'Такого поезда не существует' if train.nil?
+    raise 'Поезд находится в движении' unless train.speed.zero?
 
     case answer
     when 1
-      raise 'Не найдено ни одного вагона' if @wagons.empty?
-
       add_wagon_to_train(train)
     when 2
+      raise 'У поезда не найдено ни одного вагона' if train.wagons.empty?
+
       remove_wagon_from_train(train)
+    when 3
+      raise 'У поезда не найдено ни одного вагона' if train.wagons.empty?
+
+      occupy_wagon(train)
     else
       menu
     end
@@ -276,6 +291,31 @@ class RailRoad
     train.remove_wagon
     wagons << wagon
     puts 'Вагон успешно отцеплен от поезда'
+  rescue RuntimeError => e
+    puts_error(e)
+  end
+
+  def occupy_wagon(train)
+    current_wagon = which_wagon(train)
+    raise 'Вагон не найден' if current_wagon.nil?
+
+    if current_wagon.is_a?(WagonCargo)
+      raise 'Вагон полный' if current_wagon.empty_volume.zero?
+
+      puts "Свободного объема: #{current_wagon.empty_volume}"
+      puts 'Какой объем хотите загрузить?'
+      volume_cargo = gets.to_f
+      raise 'неправильное значение' if volume_cargo > current_wagon.empty_volume || volume_cargo.zero?
+
+      current_wagon.occupy_volume(volume_cargo)
+      puts 'вагон успешно загружен'
+    elsif current_wagon.is_a?(WagonPass)
+      raise 'В вагоне нет больше мест' if current_wagon.empty_seats.zero?
+
+      current_wagon.occupy_seat
+      puts 'Успешно занято 1 место'
+      puts "Осталось свободных мест: #{current_wagon.empty_seats}"
+    end
   rescue RuntimeError => e
     puts_error(e)
   end
@@ -323,7 +363,8 @@ class RailRoad
   def info
     puts ['Введите 1, если вы хотите посмотреть список станций',
           'Введите 2, если вы хотите посмотреть список поездов на станции',
-          'Введите 3, если вы хотите посмотреть количество созданных обЪектов',
+          'Введите 3, если вы хотите посмотреть список вагонов у поезда',
+          'Введите 4, если вы хотите посмотреть количество созданных объектов',
           'Введите 0, если хотите вернуться в предыдущее меню'].join("\n")
     answer = gets.to_i
     clear
@@ -333,6 +374,11 @@ class RailRoad
     when 2
       info_trains_on_station
     when 3
+      raise 'Поездов не существует' if trains.empty?
+
+      train = which_train
+      info_wagons_of_train(train)
+    when 4
       info_instances
     else
       menu
@@ -349,13 +395,40 @@ class RailRoad
   end
 
   def info_trains_on_station
+    raise 'Поездов не существует' if trains.empty?
+
     station = which_station
     raise 'Нет такой станции' if station.nil?
     raise 'На станции нет поездов' if station.trains.empty?
 
-    puts "На станции - #{station.name} находятся следующие поезда:"
-    station.trains.each { |train| puts train.number }
-    sleep 2
+    station.each_trains do |train|
+      puts [train.number,
+            train.is_a?(TrainPass) ? 'Пассажирский' : 'Грузовой',
+            "#{train.wagons.size} вагонов"].join(', ')
+    end
+    sleep 3
+  rescue RuntimeError => e
+    puts_error(e)
+  end
+
+  def info_wagons_of_train(train)
+    raise 'Нет такого поезда' if train.nil?
+    raise 'У это поезда нет ни одного вагона' if train.wagons.empty?
+
+    train.each_wagons do |wagon, i|
+      if train.is_a?(TrainCargo)
+        puts ["вагон №#{i + 1}",
+              'грузовой',
+              "#{wagon.empty_volume}т. свободного места",
+              "#{wagon.occupied_volume}т. загружено"].join(', ')
+      elsif train.is_a?(TrainPass)
+        puts ["вагон №#{i + 1}",
+              'пассажирский',
+              "#{wagon.empty_seats} свободных мест",
+              "#{wagon.occupied_seats} занятых мест"].join(', ')
+      end
+    end
+    sleep 3
   rescue RuntimeError => e
     puts_error(e)
   end
@@ -415,6 +488,14 @@ class RailRoad
     puts 'Введите номер поезда'
     num_trains = gets.chomp
     @trains.find { |train| train.number == num_trains }
+  end
+
+  # доп метод для выбора вагона
+  def which_wagon(train)
+    info_wagons_of_train(train)
+    puts 'Введите номер вагона для действия'
+    num_wagon = gets.to_i
+    train.wagons[num_wagon - 1]
   end
 
   # метод для поиска соответствующего вагона типу поезда

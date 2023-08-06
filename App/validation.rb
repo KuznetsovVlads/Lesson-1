@@ -1,14 +1,16 @@
+# frozen_string_literal: true
+
 # Модуль для проверки правильности ввода данных
 module Validation
   def valid?
     validate!
     true
-  rescue
+  rescue StandardError
     false
   end
 
   module ValidStation
-    NAME_STATION_FORMAT = /^[a-z]{2,}$/i
+    NAME_STATION_FORMAT = /^[a-z]{2,}$/i.freeze
 
     protected
 
@@ -19,7 +21,7 @@ module Validation
   end
 
   module ValidTrain
-    NUMBER_TRAIN_FORMAT = /^(\w|\d){3}-?(\w|\d){2}$/i
+    NUMBER_TRAIN_FORMAT = /^(\w|\d){3}-?(\w|\d){2}$/i.freeze
 
     protected
 
@@ -39,6 +41,24 @@ module Validation
     def validate!
       raise 'Станции не найдены' if @list_stations.compact.size < 2
       raise 'Ошибка данных' unless @list_stations[0].is_a?(Station) || @list_stations[1].is_a?(Station)
+    end
+  end
+
+  module ValidWagonPass
+    protected
+
+    def validate!
+      raise 'Ошибка данных' unless @total_seats.is_a?(Integer)
+      raise 'Неверное значение мест' if @total_seats <= 0 || @total_seats > 100
+    end
+  end
+
+  module ValidWagonCargo
+    protected
+
+    def validate!
+      raise 'Ошибка данных' unless @total_volume.is_a?(Integer)
+      raise 'Неверное значение объема' if @total_volume <= 0 || @total_volume > 250
     end
   end
 end

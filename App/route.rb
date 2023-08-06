@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Класс для создания маршрутов
 require_relative './instance_counter'
 require_relative './validation'
