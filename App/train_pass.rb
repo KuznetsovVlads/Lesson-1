@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 # Класс для создания пассажирских поездов
 # Имеет родительский класс Train
 class TrainPass < Train
-
   def add_wagon(wagon)
     super
 

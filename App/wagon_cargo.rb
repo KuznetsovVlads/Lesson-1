@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Класс для создания вагонов исключительно грузового типа
 require_relative './manufacturer'
 require_relative './validation'
@@ -16,7 +18,7 @@ class WagonCargo
 
   # метод, которые "занимает объем" в вагоне (объем указывается в качестве параметра метода)
   def occupy_volume(volume_cargo)
-    @occupied_volume += volume_cargo.to_i if @occupied_volume < @total_volume
+    @occupied_volume += volume_cargo.to_f if @occupied_volume < @total_volume
   end
 
   #  метод, который возвращает оставшийся (доступный) объем

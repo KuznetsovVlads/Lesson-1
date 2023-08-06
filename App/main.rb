@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Основная программа для исполнения
 require_relative './railroad'
 

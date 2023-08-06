@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 # Класс для создания грузовых поездов
 # Имеет родительский класс Train
 class TrainCargo < Train
-
   def add_wagon(wagon)
     super
 

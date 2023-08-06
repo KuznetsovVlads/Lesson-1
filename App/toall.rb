@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Модуль добавляет все созданные объекты в массив класса
 module ToAll
   def self.included(base)

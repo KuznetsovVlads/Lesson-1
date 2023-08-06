@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Класс для создания станций
 require_relative './instance_counter'
 require_relative './toall'
@@ -41,10 +43,8 @@ class Station
   end
 
   # метод, который принимает блок и проходит по всем поездам на станции, передавая каждый поезд в блок
-  def each_trains
+  def each_trains(&block)
     puts "На станции - #{@name} находятся следующие поезда:"
-    @trains.each do |train|
-      yield(train)
-    end
+    @trains.each(&block)
   end
 end

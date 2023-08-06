@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
 # Класс для создания обьектов типа поезд.
 require_relative './manufacturer'
 require_relative './instance_counter'
 require_relative './toall'
 require_relative './validation'
-
 
 class Train
   include InstanceCounter
@@ -85,10 +86,8 @@ class Train
 
   # метод, который принимает блок и проходит по всем вагонам поезда
   # (вагоны должны быть во внутреннем массиве), передавая каждый объект вагона в блок.
-  def each_wagons
-    wagons.each_with_index do |wagon, i|
-      yield(wagon, i)
-    end
+  def each_wagons(&block)
+    wagons.each_with_index(&block)
   end
 
   private

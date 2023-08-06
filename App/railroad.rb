@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Класс который позволяет через текстовый интерфейс делать следующее:
 #  - Создавать станции
 #  - Создавать поезда
@@ -15,7 +17,6 @@ require_relative './train_pass'
 require_relative './wagon_cargo'
 require_relative './wagon_pass'
 require_relative './validation'
-
 
 class RailRoad
   include Validation::ValidTrain
@@ -46,7 +47,7 @@ class RailRoad
       info
     else
       puts 'Выход'
-      #exit
+      # exit
     end
   end
 
@@ -303,7 +304,7 @@ class RailRoad
 
       puts "Свободного объема: #{current_wagon.empty_volume}"
       puts 'Какой объем хотите загрузить?'
-      volume_cargo = gets.to_i
+      volume_cargo = gets.to_f
       raise 'неправильное значение' if volume_cargo > current_wagon.empty_volume || volume_cargo.zero?
 
       current_wagon.occupy_volume(volume_cargo)
@@ -373,7 +374,10 @@ class RailRoad
     when 2
       info_trains_on_station
     when 3
-      info_wagons_of_train
+      raise 'Поездов не существует' if trains.empty?
+
+      train = which_train
+      info_wagons_of_train(train)
     when 4
       info_instances
     else
@@ -407,20 +411,17 @@ class RailRoad
     puts_error(e)
   end
 
-  def info_wagons_of_train
-    raise 'Поездов не существует' if trains.empty?
+  def info_wagons_of_train(train)
+    raise 'Нет такого поезда' if train.nil?
+    raise 'У это поезда нет ни одного вагона' if train.wagons.empty?
 
-    current_train = which_train
-    raise 'Нет такого поезда' if current_train.nil?
-    raise 'У это поезда нет ни одного вагона' if current_train.wagons.empty?
-
-    current_train.each_wagons do |wagon, i|
-      if current_train.is_a?(TrainCargo)
+    train.each_wagons do |wagon, i|
+      if train.is_a?(TrainCargo)
         puts ["вагон №#{i + 1}",
               'грузовой',
               "#{wagon.empty_volume}т. свободного места",
               "#{wagon.occupied_volume}т. загружено"].join(', ')
-      elsif current_train.is_a?(TrainPass)
+      elsif train.is_a?(TrainPass)
         puts ["вагон №#{i + 1}",
               'пассажирский',
               "#{wagon.empty_seats} свободных мест",
@@ -489,9 +490,9 @@ class RailRoad
     @trains.find { |train| train.number == num_trains }
   end
 
+  # доп метод для выбора вагона
   def which_wagon(train)
-    puts 'У этого поезда прицеплены следующие вагоны:'
-    train.info_wagons
+    info_wagons_of_train(train)
     puts 'Введите номер вагона для действия'
     num_wagon = gets.to_i
     train.wagons[num_wagon - 1]
