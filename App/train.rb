@@ -20,7 +20,7 @@ class Train
   def initialize(number)
     @number = number
     @wagons = []
-    @speed = 0
+    @speed ||= 0
     @route = nil
     @current_station = nil
     add_self_to_all

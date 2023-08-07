@@ -11,7 +11,7 @@ class WagonPass
 
   def initialize(total_seats)
     @total_seats = total_seats
-    @occupied_seats = 0
+    @occupied_seats ||= 0
     validate!
   end
 

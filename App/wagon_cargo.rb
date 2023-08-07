@@ -12,7 +12,7 @@ class WagonCargo
 
   def initialize(total_volume)
     @total_volume = total_volume
-    @occupied_volume = 0
+    @occupied_volume ||= 0
     validate!
   end
 
