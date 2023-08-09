@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-# Класс для создания обьектов типа поезд.
-require_relative './manufacturer'
-require_relative './instance_counter'
-require_relative './toall'
-require_relative './validation'
+require_relative 'manufacturer'
+require_relative 'instance_counter'
+require_relative 'toall'
+require_relative 'validation'
 
+# Класс для создания обьектов типа поезд.
 class Train
   include InstanceCounter
   include Manufacturer
@@ -20,7 +20,7 @@ class Train
   def initialize(number)
     @number = number
     @wagons = []
-    @speed = 0
+    @speed ||= 0
     @route = nil
     @current_station = nil
     add_self_to_all

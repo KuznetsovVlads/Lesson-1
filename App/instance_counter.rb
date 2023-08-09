@@ -7,6 +7,7 @@ module InstanceCounter
     base.include(InstanceMethods)
   end
 
+  # Модуль на уровне класса
   module ClassMethods
     def instances
       @instances ||= 0
@@ -18,6 +19,7 @@ module InstanceCounter
     end
   end
 
+  # Модуль на уровне объекта
   module InstanceMethods
     def register_instance
       self.class.increment_instances

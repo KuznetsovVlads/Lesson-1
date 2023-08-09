@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-# Класс для создания станций
-require_relative './instance_counter'
-require_relative './toall'
-require_relative './validation'
+require_relative 'instance_counter'
+require_relative 'toall'
+require_relative 'validation'
 
+# Класс для создания станций
 class Station
   include InstanceCounter
   include ToAll
