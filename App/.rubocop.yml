@@ -8,4 +8,5 @@ Metrics/AbcSize:
   Max: 19
 
 Metrics/ClassLength:
-  Enabled: false
+  Exclude:
+    - './railroad.rb'
