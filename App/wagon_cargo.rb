@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-# Класс для создания вагонов исключительно грузового типа
-require_relative './manufacturer'
-require_relative './validation'
+require_relative 'manufacturer'
+require_relative 'validation'
 
+# Класс для создания вагонов исключительно грузового типа
 class WagonCargo
   include Manufacturer
   include Validation::ValidWagonCargo

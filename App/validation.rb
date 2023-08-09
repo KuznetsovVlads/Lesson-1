@@ -9,6 +9,7 @@ module Validation
     false
   end
 
+  # Модуль для проверки правильности ввода данных в классе Station
   module ValidStation
     NAME_STATION_FORMAT = /^[a-z]{2,}$/i.freeze
 
@@ -20,6 +21,7 @@ module Validation
     end
   end
 
+  # Модуль для проверки правильности ввода данных в классе Train
   module ValidTrain
     NUMBER_TRAIN_FORMAT = /^(\w|\d){3}-?(\w|\d){2}$/i.freeze
 
@@ -35,6 +37,7 @@ module Validation
     end
   end
 
+  # Модуль для проверки правильности ввода данных в классе Route
   module ValidRoute
     protected
 
@@ -44,6 +47,7 @@ module Validation
     end
   end
 
+  # Модуль для проверки правильности ввода данных в классе WagonPass
   module ValidWagonPass
     protected
 
@@ -53,6 +57,7 @@ module Validation
     end
   end
 
+  # Модуль для проверки правильности ввода данных в классе WagonCargo
   module ValidWagonCargo
     protected
 

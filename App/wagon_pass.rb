@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
-# Класс для создания вагонов исключительно пассажирского типа
-require_relative './manufacturer'
-require_relative './validation'
+# Class for creating cars of exclusively passenger type
+require_relative 'manufacturer'
+require_relative 'validation'
 
+# Класс для создания вагонов исключительно пассажирского типа
 class WagonPass
   include Manufacturer
   include Validation::ValidWagonPass

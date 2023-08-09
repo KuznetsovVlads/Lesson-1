@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-# Класс для создания обьектов типа поезд.
-require_relative './manufacturer'
-require_relative './instance_counter'
-require_relative './toall'
-require_relative './validation'
+require_relative 'manufacturer'
+require_relative 'instance_counter'
+require_relative 'toall'
+require_relative 'validation'
 
+# Класс для создания обьектов типа поезд.
 class Train
   include InstanceCounter
   include Manufacturer

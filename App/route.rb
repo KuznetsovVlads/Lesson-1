@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-# Класс для создания маршрутов
-require_relative './instance_counter'
-require_relative './validation'
+require_relative 'instance_counter'
+require_relative 'validation'
 
+# Класс для создания маршрутов
 class Route
   include InstanceCounter
   include Validation::ValidRoute

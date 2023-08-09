@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Основная программа для исполнения
-require_relative './railroad'
+require_relative 'railroad'
 
 # тестовые данные (станции, поезда, вагоны).
 # для проверки работоспособности новых методов

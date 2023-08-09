@@ -7,12 +7,14 @@ module ToAll
     base.include(InstanceMethods)
   end
 
+  # Модуль для работы на уровне метода класса
   module ClassMethods
     def all
       @all ||= []
     end
   end
 
+  # Модуль для работы на уровне методов класса
   module InstanceMethods
     def add_self_to_all
       self.class.all << self
